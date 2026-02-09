@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { JSX } from "react/jsx-runtime";
 
 const PRODUCTS = [
   {category: "Fruits", price: "$1", stocked: true, name: "Apple"},
@@ -10,67 +11,84 @@ const PRODUCTS = [
 ];
 
 export default function FilterTable(){
-  return (
+  return(
     <>
-      <FilterableProductTable products={PRODUCTS} />
+      <FilterableProductTable products = {PRODUCTS} />
     </>
   )
 }
 
 function FilterableProductTable({products}:any){
   const [filterText , setFilterText] = useState('');
-  const [ inStockOnly , setInStockOnly] = useState(false);
+  const [inStockOnly, setInStockOnly] = useState(false);
   return(
     <>
-      <SearchBar filterText={filterText} inStockOnly={inStockOnly} setFilterText={setFilterText} setInStockOnly={setInStockOnly} />
-      <ProductTable filterText={filterText} inStockOnly={inStockOnly} products={products} />
+        <SearchBar filterText={filterText} inStockOnly={inStockOnly} setFilterText={setFilterText} setInStockOnly={setInStockOnly} />
+        <ProductTable filterText={filterText} inStockOnly={inStockOnly} products={products}   />
     </>
   )
 }
 
-
-function SearchBar({filterText, inStockOnly,setFilterText , setInStockOnly}:any){
+function SearchBar({filterText , inStockOnly ,setInStockOnly,setFilterText}:any){
   return (
     <>
-    <input type="text" value={filterText} id="" onChange={(e) => {setFilterText(e.target.value)}} />
-    <input type="checkbox" checked={inStockOnly} id="" onChange={(e) => {setInStockOnly(e.target.checked)}} />
+        <input type="text" value={filterText} onChange={e=>{setFilterText(e.target.value)}} />
+        <input type="checkbox" checked={inStockOnly} onChange={e=>{setInStockOnly(e.target.checked)}} />
     </>
   )
 }
 
-function ProductTable({filterText, inStockOnly,products}:any){
 
-  const filtered = products.filter((p:any)=>{
+function ProductTable({filterText , inStockOnly ,products}:any){
+  let rows: JSX.Element[] = [];
+  let lastCategory: any ;
 
-    if(p.name.startsWith(filterText)){
-      if(inStockOnly && p.stocked){
-        return true;
-      }
-      else if(!inStockOnly ){
-        return true;
-      }
+  products.forEach((product:any)=>{
+
+    if(product.name.toLowerCase().indexOf(filterText.toLowerCase())==-1){
+      return ;
     }
-    else{
-      false;
+    if(inStockOnly && !product.stocked){
+      return;
     }
-
+    if(product.category != lastCategory){
+      rows.push(
+        <>
+        <ProductCat product={product} />
+        <br /></>
+      )
+    }
+    rows.push(
+      <>
+      <ProductRow product={product} />
+      <br />
+      </>
+    
+    )
+    lastCategory = product.category;
   })
+  return(
+    <>
+        <h3>Name  ----  Price</h3>
+        {rows}
+    </>
+  )
+}
+
+function ProductCat({product}:any){
 
   return(
     <>
-    {
-      filtered.map((p:any)=>{
-        return(
-          <ul>
-            <li>
-              {p.name} -- {p.price}
-            </li>
-          </ul>
+      {product.category}
+    </>
+  )
+}
 
-        )
-      })
+function ProductRow({product}:any){
 
-    }
+  return(
+    <>
+      {product.name} ----- {product.price}
     </>
   )
 }
