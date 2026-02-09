@@ -5,6 +5,8 @@ import './App.css'
 import Red from './Red'
 import RedWithInit from './RedWithInit'
 import UseStateUsingReducer from './useStateUsingReducer'
+import Context from './Context'
+import ContextWithState from './ContextWithState'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,7 +16,9 @@ function App() {
       {/* <RedWithInit /> */}
       {/* <UseStateUsingReducer />
        */}
-       <UseStateUsingReducer/>
+       {/* <UseStateUsingReducer/> */}
+       {/* <Context/> */}
+       <ContextWithState/>
     </>
   )
 }
