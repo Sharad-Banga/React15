@@ -7,6 +7,7 @@ import RedWithInit from './RedWithInit'
 import UseStateUsingReducer from './useStateUsingReducer'
 import Context from './Context'
 import ContextWithState from './ContextWithState'
+import StopWatch from './StopWatch'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,7 +19,8 @@ function App() {
        */}
        {/* <UseStateUsingReducer/> */}
        {/* <Context/> */}
-       <ContextWithState/>
+       {/* <ContextWithState/> */}
+       <StopWatch/>
     </>
   )
 }
